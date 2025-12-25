@@ -1,0 +1,30 @@
+@import "tailwindcss";
+
+@keyframes downwards {
+    0%{
+        transform: translateY(0);
+    }
+    100%{
+        transform: translateY(-50%);
+    
+    }
+    
+}
+@keyframes upwards {
+    0%{
+        transform: translateY(-50%);
+    }
+    100%{
+        transform: translateY(0%);
+    
+    }
+    
+}
+.animate-downwards{
+    animation: downwards 50s linear infinite;
+
+}
+.animate-upwards{
+    animation: upwards 50s linear infinite;
+
+}
