@@ -94,6 +94,13 @@ export const UserFactory=(sequelize:Sequelize)=>{
             type:DataTypes.STRING,
             allowNull:true,
          },
+
+         isActive: {
+         type: DataTypes.BOOLEAN,
+         allowNull: false,
+         defaultValue: true,
+         },
+         
         createdBy: {
            type: DataTypes.UUID,
            unique: false,

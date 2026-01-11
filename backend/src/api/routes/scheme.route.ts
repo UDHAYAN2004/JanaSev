@@ -71,8 +71,10 @@ router.get('/get-states', verifyToken, getState)
 // Fetch the community
 router.get('/get-community',verifyToken,fetchCommunity)
 
-//fetch total Schemes
-router.get('/total-schemes/by-state',verifyToken,isAdmin,schemesCount)
+//fetch total Schemes by state
+router.get('/total-schemes/:by-state',verifyToken,isAdmin,schemesCount)
+
+
 
 
 export default router;

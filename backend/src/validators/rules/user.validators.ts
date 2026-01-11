@@ -95,10 +95,10 @@ login:[
 
 //Profile Update Validator (context-aware)
 profileValidator : [
-  body("category")
+  body("community")
     .trim()
     .notEmpty()
-    .withMessage("Category is required"),
+    .withMessage("Community is required"),
 
   body("state")
     .trim()

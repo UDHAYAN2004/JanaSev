@@ -14,13 +14,13 @@ export const updateProfile = async (req: AuthRequest, res: Response) => {
     //Find the user by ID
     const user = await User.findOne({ where: { id } });
     if (!user) {
-      return res.status(400).json({ error: "User not found" });
+      return res.status(400).json({ messagge: "User not found" });
     }
 
     // Check if username already exists in another user
     const isExist = await User.findOne({ where: { userName } });
     if (isExist && isExist.id !== id) {
-      return res.status(400).json({ error: "Username already Exist" });
+      return res.status(400).json({ message: "Username already Exist" });
     }
 
     // Update user
@@ -79,30 +79,26 @@ export const getProfile = async (req: AuthRequest, res: Response) => {
   }
 };
 
-export const totalUsers=async(req:AuthRequest,res:Response )=>{
+//====================================Total Users====================================
+
+export const totalUsers = async (req: AuthRequest, res: Response) => {
   try {
-    const adminState=req.user?.state
-    if(!adminState){
-      return res.status(400).json({
-        success:false,
-        message: "Admin State is not fount in token"
-      })
-    }
-    const usersCount = await User.count({
-      where:{state:{[Op.iLike]:adminState}}
-    })
-    return res.status(200)
-    .json({
-      success:true,
-      users:usersCount
-    })
-    
+    const totalUser = await User.count(
+      {where:{
+        state:{
+          [Op.iLike]:req.user?.state
+        }
+      }}
+    );
+
+    return res.status(200).json({
+      success: true,
+      totalUser,
+    });
   } catch (error) {
-     return res.status(500)
-     .json({
-      success:false,
-      message:"Something went wrong",
-      error:error
-     })
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
   }
-}
+};
