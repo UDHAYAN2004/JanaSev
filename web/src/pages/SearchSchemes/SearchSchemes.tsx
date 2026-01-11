@@ -332,10 +332,10 @@ const SearchSchemes = ({setSchemes,page}) => {
           animation-delay: 4s;
         }
         .animate-scroll-up {
-          animation: scroll-up 30s linear infinite;
+          animation: scroll-up 20s linear infinite;
         }
         .animate-scroll-down {
-          animation: scroll-down 30s linear infinite;
+          animation: scroll-down 20s linear infinite;
         }
         @keyframes blob {
           0% { transform: translate(0px, 0px) scale(1); }

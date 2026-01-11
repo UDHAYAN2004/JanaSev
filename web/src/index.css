@@ -28,3 +28,7 @@
     animation: upwards 50s linear infinite;
 
 }
+
+.sidebar-img{
+    background-image: url('./assets/Admin-sidebar/sidebar.png');
+}

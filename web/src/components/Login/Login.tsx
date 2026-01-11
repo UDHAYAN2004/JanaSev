@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { Formik, Form, Field, ErrorMessage, type FormikHelpers } from "formik";
 import * as Yup from "yup";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useLoginMutation } from "./Slice";
 import { setAppUser } from "../../pages/appReducers/appUserReducer"; // adjust the path if needed
 import { AUTH_APP_USER, toErrorMsg } from "../../utils";
@@ -13,6 +13,7 @@ interface LoginValues {
 }
 
 const Login = () => {
+  const appUser=useSelector((state:any)=>state.appUser)
   const [login] = useLoginMutation();
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
@@ -36,44 +37,40 @@ const Login = () => {
       .required("Password is required"),
   });
 
-  const handleSubmit = async (
-    values: LoginValues,
-    { resetForm, setSubmitting }: FormikHelpers<LoginValues>
-  ) => {
-    try {
-      const response = await login(values).unwrap();
-      console.log("Login Response:", response);
+ const handleSubmit = async (
+  values: LoginValues,
+  { resetForm, setSubmitting }: FormikHelpers<LoginValues>
+) => {
+  try {
+    const response = await login(values).unwrap();
 
-      const { success, message, user,token} = response;
-      if (success && user) {
-        alert(message);
-
-        // Save to Redux
-        dispatch(setAppUser({ token: token || "", user }));
-
-        // Save to localStorage (optional)
-        localStorage.setItem(AUTH_APP_USER, JSON.stringify({ token, user }));
-
-        // Redirect based on role
-        if (user.role === "admin") {
-          navigate("/");
-        } else {
-          navigate("/");
-        }
-
-        resetForm();
-      } else {
-        alert(message || "Login failed");
-      }
-    } catch (error: any) {
-      console.error("Login Error:", error);
-      const errorMessage =
-        error?.data?.message || error?.message || "Login failed";
-      alert(toErrorMsg(errorMessage));
-    } finally {
-      setSubmitting(false);
+    if (!response?.success || !response?.token || !response?.user) {
+      throw new Error("Invalid login response");
     }
-  };
+
+    dispatch(setAppUser({ token: response?.token, user: response?.user }));
+    console.log(appUser?.user)
+
+
+    localStorage.setItem(
+      AUTH_APP_USER,
+      JSON.stringify({
+        token: response.token,
+        user: response.user,
+      })
+    );
+
+    navigate(
+      response.user.role === "admin" ? "/admin/dashboard" : "/"
+    );
+
+    resetForm();
+  } catch (error: any) {
+    alert(toErrorMsg(error?.data?.message || "Login failed"));
+  } finally {
+    setSubmitting(false);
+  }
+};
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50 flex items-center justify-center p-4">

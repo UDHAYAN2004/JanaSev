@@ -3,8 +3,10 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { useState } from 'react';
 import profile from '../../assets/profile.jpg';
+import { useUpdateProfileMutation } from './slice';
 
 interface ProfileValues {
+  id:string;
   name: string;
   userName: string;
   Gender: string;
@@ -20,8 +22,9 @@ const ViewProfile = () => {
   const appUser = useSelector((state: any) => state.appUser);
   const [isEditing, setIsEditing] = useState(false);
   const [profileImage, setProfileImage] = useState(profile);
-
+  const[updateProfile]=useUpdateProfileMutation();
   const initialValues: ProfileValues = {
+    id:appUser?.user?.id,
     name: appUser?.user?.name || "",
     userName: appUser?.user?.userName || "",
     Gender: appUser?.user?.Gender || "",
@@ -50,16 +53,13 @@ const ViewProfile = () => {
   const handleSubmit = async (values: ProfileValues, { setSubmitting }: any) => {
     try {
       // Add your update profile API call here
-      console.log('Profile updated:', values);
-      
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      alert('Profile updated successfully!');
-      setIsEditing(false);
+     const {isUpdate,message}= await updateProfile(values as unknown as FormData).unwrap();
+        if(isUpdate)
+          alert(message);
+        setIsEditing(false);
     } catch (error) {
       console.log('Update error:', error);
-      alert('Failed to update profile. Please try again.');
+      alert(JSON.stringify((error.data.errors[0].message).toString()));
     } finally {
       setSubmitting(false);
     }

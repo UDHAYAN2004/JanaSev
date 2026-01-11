@@ -164,9 +164,9 @@ const NavBar = () => {
                         boxShadow: "0 10px 25px -5px rgba(139, 92, 246, 0.4)"
                       }}
                       whileTap={{ scale: 0.95 }}
-                      className="px-3 py-3 bg-linear-to-r from-purple-600 to-indigo-600 text-white  hover:from-purple-700 hover:to-indigo-700 transition-all duration-300 font-semibold shadow-lg relative overflow-hidden group rounded-[50%]"
+                      className="px-3 py-3   hover:from-purple-700 hover:to-indigo-700 transition-all duration-300 font-semibold shadow-lg relative overflow-hidden group rounded-[50%]"
                     >
-                      <div className="absolute inset-0 bg-linear-to-r from-indigo-500 to-purple-500 opacity-0 rounded-[50%] group-hover:opacity-100 transition-opacity duration-300" />
+                      <div className="absolute inset-0 rounded-[50%] group-hover:opacity-100 transition-opacity duration-300" />
                       <span className="relative z-10 flex items-center gap-2 ">
                         <svg className="w-4 h-4 " fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
